@@ -1,0 +1,422 @@
+SASS:(syntactically awesome style sheets) build by dart language
+
+css pre processor(scripting language)
+
+benefits:
+faster developement less code
+variables
+if else condition
+for,while loops
+function & mixins
+nested support & much more
+ 
+------------------------------------------------------------
+.sass(indentation style)
+.exampple
+	display:flex
+	color:red
+
+.scss(traditional css)
+.example
+	{
+	display:flex;
+	color:red
+	}
+--------------------------------------------------------------
+env setup :
+sass compiler
+live server
+node-sass
+
+
+terminal:(transfiling)
+npm i sass
+sass -w inputfile outputpath
+------------------------------------------------
+comments:
+/* */ then only in css file it will show the comments
+
+#{} interpolation (expression),/*! */
+
+------------------------------------------
+
+sass variables:
+$primary:blue;
+$secondary:gray;
+$danger:red;
+$success:green;
+$text-color:white;
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+.col{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.box1{
+    background-color: $danger;
+  
+    color: $text-color;
+    height: 200px;
+}
+.box2{
+    background-color: $success;
+    $text-color:red !global;
+    color: $text-color;
+    height: 200px;
+}
+.box3{
+    background-color: $primary;
+    color: $text-color;
+    height: 200px;
+}
+.box4{
+    background-color: $secondary;
+    color: $text-color;
+    height: 200px;
+}
+----------------------------------------
+sass values():
+number
+string
+color
+lists
+maps
+boolean
+null
+===========
+number:
+$font-size:16px;
+
+string:
+$font-family:'Courier New', Courier, monospace;
+
+list:
+$colors:blue,red,gree,white;
+$font-weight:'400','700','900';
+
+map:
+$alertcolor:("primary":blue,"secondary":gray,"danger":red,"success":green)
+
+use=> 
+    background-color:map-get($alertcolor ,"success" );
+background-color:map-get($map:$alertcolor , $key:"success" );
+
+boolean:
+$dark-mode:false;
+
+null:
+$theme-color:null;
+use:
+background-color:$theme-color;
+it will remove the property 
+------------------------------------------------------------
+
+nesting
+example:
+&-parent name it will take;
+
+  <div class="card m-5">
+        <div class="card-header">
+          Sass concepts
+        </div>
+        <div class="card-body"> 
+          Lorem ipsum dolor, sit amet consectetur adipisicing elit. Asperiores, beatae corrupti. Culpa ut illo hic id quaerat, doloremque quis iusto doloribus reprehenderit inventore ratione saepe omnis temporibus totam rerum, soluta impedit reiciendis dolorum ducimus, dolorem recusandae accusamus fugiat. Eos obcaecati libero doloremque et distinctio tenetur odio porro error molestiae cumque assumenda quo dolorum illo provident itaque qui sit, maxime architecto voluptates eveniet aliquid? Aliquid similique dolorem explicabo eligendi earum harum magni inventore nisi veniam sequi esse facere voluptatem, architecto, dolorum quae quos ea. Eligendi explicabo veniam animi recusandae maiores natus architecto impedit illum expedita porro beatae delectus libero, cupiditate quis.
+        </div>
+        <div class="card-footer">
+          card footer content
+        </div>
+      </div>
+.card {
+    font-family: $font-family;
+  
+    &-header {
+      color: $primary !important;
+    }
+  
+    &-body {
+      color: $secondary !important;
+    }
+  
+    &-footer {
+      color: $success !important;
+    }
+}
+
+---------------------------------------------------
+interpolation:
+biding values dynamically using variable
+syndex: #{}
+$background:"bg.jpg";
+  background-image: url('/Images/#{$background}');
+
+--------------------------------------------------------------------
+
+@rules:
+sass extra functionality comes in the forms of new at-rules
+
+@import "filepath";
+Partials file it won't create new css file (compiler will to compaile this partial files)
+note: save files name with _ before (_color.scss)
+
+@use=>get files
+@forward=> pushing 
+
+example:
+
+@use "../abstracts/variables/index" as *;
+@forward "./color";
+@forward "./fonts";
+
+----------------------------------------------------------------
+@mixin => write custom component css(it will return css)
+@include => to use mixin include needed
+
+example:
+@mixin mybtn($color:#fff){
+    padding: 10px 20px ;
+    border-radius: 10px;
+    border: none;
+    color:$color;
+}
+
+@use "../abstracts/variables/mixings" as *;
+
+.mybtn {
+    
+    &-default{
+        @include mybtn(#000);
+    }
+    
+    &-success {
+         @include mybtn(#fff);
+        background-color: green;
+    }
+
+    &-danger {
+         @include mybtn(#fff);
+        background-color: red;
+    }
+}
+------------------------------------------------------------------
+
+@function (it will return values)
+
+example:
+
+@use "../abstracts/variables/index" as *;
+@function brand-color($color){
+    @return map-get($theme-colors,$color)
+}
+
+@use "../abstracts/variables/index" as *;
+@use "../abstracts/functions" as *;
+.card {
+    font-family: $font-family;
+  
+    &-header {
+        color: brand-color("success")!important;
+    }
+  
+    &-body {
+      color:brand-color("secondary")!important;
+    }
+  
+    &-footer {
+      color: brand-color("success") !important;
+    }
+    // background-image: url('/Images/#{$background}');
+}
+
+-----------------------------------------------------------------------
+
+@extend
+
+
+.myalert{
+  padding: 10px 20px;  
+  border-radius: 5px;
+ 
+
+  &-success{
+    // @extend .myalert;
+    border: 1px solid rgb(41, 228, 41);
+    background-color: lightgreen
+  }
+  &-info{
+    // @extend .myalert;    
+    border: 1px solid rgb(23, 177, 238);
+    background-color: rgb(99, 198, 238);
+  }
+}
+
+------------------------------------------
+@error
+
+example
+@error "This is my brand color primary:#{functions.brand-color()}";
+
+@warn
+
+example
+@warn "This is my brand color primary:#{functions.brand-color()}";
+@debug
+
+
+@debug "This is my brand color primary:#{functions.brand-color()}";
+
+-------------------------------------------------------
+sass operators:
+equality (==,!=)
+relational(>,<,<=,>=)
+numeric
+string
+boolean
+
+units also should match
+$first-num:1;
+$second-num:2;
+
+@debug "Result:#{$first-num!=$second-num}";
+@debug 100 > 50; // true
+@debug 10px < 17px; // true
+@debug 96px >= 1in; // true
+@debug 1000ms <= 1s; // true
+
+
+@debug 10s + 15s; // 25s
+@debug 1in - 10px; // 0.8958333333in
+@debug 5px * 3px; // 15px*px
+@debug 1in % 9px; // 0.0625in
+
+@debug "Helvetica" + " Neue"; // "Helvetica Neue"
+@debug sans- + serif; // sans-serif
+@debug sans - serif; // sans-serif
+
+@debug not true; // false
+@debug not false; // true
+
+@debug true and true; // true
+@debug true and false; // false
+
+@debug true or false; // true
+@debug false or false; // false
+
+order of operators:
+The unary operators not, +, -, and /.
+The *, /, and % operators.
+The + and - operators.
+The >, >=, < and <= operators.
+The == and != operators.
+The and operator.
+The or operator.
+The = operator, when it’s available.
+
+@debug 1 + 2 * 3 == 1 + (2 * 3); // true
+@debug true or false and false == true or (false and false); // true
+----------------------------------------------------------------------------
+@if 
+
+$text-limit:3;
+.if-para{
+    @if $text-limit <=3{
+        color: red;
+    }
+    @if $text-limit>3 and $text-limit<=6{
+        color: orange;
+    }
+    @if $text-limit >6{
+        color: blue;
+    }
+}
+
+@else if
+
+$text-limit:5;
+.if-para{
+    @if $text-limit <=3{
+        color: red;
+    }
+    @else if $text-limit>3 and $text-limit<=6{
+        color: orange;
+    }
+    @else {
+        color: blue;
+    }
+}
+
+
+@mixin avatar($size, $circle: false) {
+    width: $size;
+    height: $size;
+    @if $circle{
+        border-radius:math.div($size, 2);
+    }
+}
+
+.square-av {
+    @include avatar(100px)
+}
+
+.circle-av {
+    @include avatar(100px, true)
+}
+
+------------------------------------------------
+@for
+
+@for $i from 1 to 7{
+    h#{$i}{
+        font-size: 10px*$i;
+        color: rgb(random(255),random(255),random(255));
+    }
+}
+
+-----------------------------------------------------
+
+@each
+
+$spacing: 1, 2, 3, 4, 5, 6;
+$directions: top, right, bottom, left;
+
+@each $increment in $spacing {
+    .m-#{$increment} {
+        margin: #{$increment}rem;
+    }
+    .p-#{$increment} {
+        padding: #{$increment}rem;
+    }
+
+
+    @each $direction in $directions {
+        .m#{str-slice($direction,0,1)}-#{$increment} {
+            margin-#{$direction}:#{$increment}rem !important;
+        }
+        .p#{str-slice($direction,0,1)}-#{$increment} {
+            padding-#{$direction}:#{$increment}rem !important;
+        }
+    }
+}
+
+-----------------------------------------------
+
+@while
+
+
+
+$count: 1;
+
+@while $count<10 {
+    h#{$count} {
+        font-size: 10px*$count;
+        color: rgb(random(255), random(255), random(255));
+    }
+
+    $count: $count+1;
+}
+
+---------------------------------------------------------
